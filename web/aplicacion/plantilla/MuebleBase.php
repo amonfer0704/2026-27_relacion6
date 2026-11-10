@@ -32,16 +32,24 @@ class MuebleBase{
     {
         $this->_nombre = $nombre;
         $this->_fabricante = $fabricante;
-        $this->_pais = $pais;
         $this->_anio = $anio;
         $this->_fechaIniVenta = $fechaIniVenta;
         $this->_fechaFinVenta = $fechaFinVenta;
         $this->_precio = $precio;
         self::$_mueblesCreados++;
+        if(!$this->setPais($pais)){
+            $this->_pais = "ESPAÑA";
+        }
+        if(!$this->setFabricante($fabricante)){
+            $this->_fabricante = $fabricante;
+        }
     }
 
     public function setNombre(string $_nombre): bool{
-        return validaCadena($_nombre, 40, mb_strtoupper($_nombre));
+        $resultado = true;
+        if($_nombre = "" || !validaCadena($_nombre, 40, mb_strtoupper($_nombre)))
+            $resultado = false;
+        return $resultado;
     }
 
     public function getNombre(): string{
@@ -49,10 +57,10 @@ class MuebleBase{
     }
 
     public function setFabricante(string $_fabricante): bool{
-        $prefijo = "FaMu";
+        $prefijo = "FaMu:";
         $resultado = true;
-        if(substr($_fabricante,0,3) == 'FaMu'){
-            $_fabricante = "FaMu" . $_fabricante;
+        if(mb_substr($_fabricante,0,5) == 'FaMu:'){
+            $_fabricante = "FaMu:" . $_fabricante;
             $resultado = false;
         }
         return $resultado?validaCadena($_fabricante, 30, ""):validaCadena($_fabricante, 30 - strlen($prefijo), "");
