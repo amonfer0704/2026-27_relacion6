@@ -10,6 +10,7 @@ abstract class MuebleBase{
     private string $_fechaIniVenta;
     private string $_fechaFinVenta;
     private float $_precio;
+    private Caracteristicas $_caracteristica;
 
     public function __set($name, $value)
     {
@@ -53,6 +54,7 @@ abstract class MuebleBase{
         if(!$this->setPrecio($precio)){
             $this->_precio = 30;
         }
+        $this->_caracteristica = new Caracteristicas();
         self::$_mueblesCreados++;
     }
 
@@ -143,6 +145,19 @@ abstract class MuebleBase{
         return [];
     }
 
+    public function getCaracteristicas(): Caracteristicas{
+        return $this->_caracteristica;
+    }
+
+    public function anadirCaracteristicas(mixed ...$parametros): void{
+        for($i = 0; $i < count($parametros) - 1; $i+=2){
+            $nombre= $parametros[$i];
+            if($nombre == "" || !is_string($nombre)){
+                throw new Exception("El nombre de la característica debe ser una cadena que no esté vacía");
+            }
+            $this->_caracteristica->$nombre = $parametros[$i + 1];
+        }
+    }
     public static function puedeCrear(int &$numero): bool{
         $resultado = true;
         if(self::$_mueblesCreados >= self::MAXIMO_MUEBLES){
@@ -159,6 +174,6 @@ abstract class MuebleBase{
     {
         return "MUEBLE de clase " . self::$_mueblesCreados . " con nombre " . $this->_nombre . ", fabricante " . $this->_fabricante . ", fabricado en " . $this->_pais . 
         " a partir del año " . $this->_anio . ", vendido desde " . $this->_fechaIniVenta . " hasta " . $this->_fechaFinVenta . 
-        " precio " . $this->_precio;
+        " precio " . $this->_precio . ", características " . $this->_caracteristica;
     }
 }
