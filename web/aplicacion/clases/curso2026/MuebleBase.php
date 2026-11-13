@@ -141,6 +141,9 @@ abstract class MuebleBase{
         return $this->_precio;
     }
 
+    public function setFechaFinVenta(): bool{
+        
+    }
     public function damePropiedadesAdicionales(): array{
         return [];
     }
@@ -172,7 +175,7 @@ abstract class MuebleBase{
 
     public function __toString()
     {
-        return "MUEBLE de clase " . self::$_mueblesCreados . " con nombre " . $this->_nombre . ", fabricante " . $this->_fabricante . ", fabricado en " . $this->_pais . 
+        return "MUEBLE de clase " . get_class($this) . " con nombre " . $this->_nombre . ", fabricante " . $this->_fabricante . ", fabricado en " . $this->_pais . 
         " a partir del año " . $this->_anio . ", vendido desde " . $this->_fechaIniVenta . " hasta " . $this->_fechaFinVenta . 
         " precio " . $this->_precio . ", características " . $this->_caracteristica;
     }
