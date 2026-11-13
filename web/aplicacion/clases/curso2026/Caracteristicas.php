@@ -3,7 +3,8 @@
 class Caracteristicas implements Iterator{
 
     private array $_propiedades = [];
-    private bool $_cerrada = false;
+    private array $_claves;
+    private int $_posicion = 0;
 
     public function __set(string $name, mixed $value): void
     {
@@ -32,5 +33,36 @@ class Caracteristicas implements Iterator{
     public function __unset($name): void
     {
         unset($this->_propiedades[$name]);
+    }
+
+    #[Override]
+    public function next(): void
+    {
+        $this->_posicion--;
+    }
+
+    #[Override]
+    public function current(): mixed
+    {
+        return $this->_posicion;
+    }
+
+    #[Override]
+    public function key(): mixed
+    {
+        return $this->_claves[$this->_posicion];
+    }
+
+    #[Override]
+    public function rewind(): void
+    {
+        $this->_claves = array_keys($this->_propiedades);
+        $this->_posicion = count($this->_claves) - 1;
+    }
+
+    #[Override]
+    public function valid(): bool
+    {
+        return $this->_posicion >= 0;
     }
 }
