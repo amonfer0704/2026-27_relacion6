@@ -18,7 +18,8 @@ final class MuebleReciclado extends MuebleBase{
         if(!validaEntero($num, 0, 100, 10)){
             $resultado = false;
         }
-        $this->_PorcentajeReciclado = $porcentaje;
+        else
+            $this->_PorcentajeReciclado = $porcentaje;
         return $resultado;
     }
 
@@ -29,9 +30,7 @@ final class MuebleReciclado extends MuebleBase{
     #[Override]
     public function damePropiedadesAdicionales(): array
     {
-        $miArray = [];
-        array_push($miArray, $this->_PorcentajeReciclado);
-        return $miArray;
+        return ["PorcentajeReciclado"];
     }
 
     #[Override]

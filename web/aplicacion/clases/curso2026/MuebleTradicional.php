@@ -22,7 +22,8 @@ final class MuebleTradicional extends MuebleBase{
         if(!validaReal($num, 15, 300, 15)){
             $resultado = false;
         }
-        $this->_Peso = $peso;
+        else
+            $this->_Peso = $peso;
         return $resultado;
     }
 
@@ -36,17 +37,19 @@ final class MuebleTradicional extends MuebleBase{
         if($cadena == "" || validaCadena($cadena, 3, "")){
             $resultado = false;
         }
-        $this->_Serie = $serie;
+        else
+            $this->_Serie = $serie;
         return $resultado;
+    }
+
+    public function getSerie(): string{
+        return $this->_Serie;
     }
 
     #[Override]
     public function damePropiedadesAdicionales(): array
     {
-        $miArray = [];
-        array_push($miArray, $this->_Peso);
-        array_push($miArray, $this->_Serie);
-        return $miArray;
+        return ["Peso", "Serie"];
     }
 
     #[Override]

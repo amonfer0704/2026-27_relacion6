@@ -50,7 +50,9 @@ abstract class MuebleBase{
         if(!$this->setFechaIniVenta($fechaIniVenta)){
             $this->_fechaIniVenta = "01/01/" . $this->_anio;
         }
-        $this->_fechaFinVenta = "31/12/2040";
+        if(!$this->setFechaFinVenta($fechaFinVenta)){
+            $this->_fechaFinVenta =  "31/12/2040";
+        }
         if(!$this->setPrecio($precio)){
             $this->_precio = 30;
         }
@@ -61,9 +63,10 @@ abstract class MuebleBase{
     public function setNombre(string $_nombre): bool{
         $resultado = true;
         $_nombre = mb_strtoupper(mb_trim($_nombre));
-        if($_nombre == "" || !validaCadena($_nombre, 40, $_nombre))
+        if($_nombre == "" || !validaCadena($_nombre, 40, ""))
             $resultado = false;
-        $this->_nombre = $_nombre;
+        else
+            $this->_nombre = $_nombre;
         return $resultado;
     }
 
@@ -89,7 +92,9 @@ abstract class MuebleBase{
         if(!validaCadena($_pais, 20, "ESPAÑA")){
             $resultado = false;
         }
-        $this->_pais = $_pais;
+        else{
+            $this->_pais = $_pais;
+        }
         return $resultado;
     }
 
@@ -103,7 +108,8 @@ abstract class MuebleBase{
         if(!validaEntero($_anio, 2020, $anioActual, 2020)){
             $resultado = false;
         }
-        $this->_anio = $_anio;
+        else
+            $this->_anio = $_anio;
         return $resultado;
     }
 
@@ -141,9 +147,23 @@ abstract class MuebleBase{
         return $this->_precio;
     }
 
-    public function setFechaFinVenta(): bool{
-        
+    public function setFechaFinVenta(string $fechaFinVenta): bool{
+        $resultado = true;
+        $fecha = $fechaFinVenta;
+        if(!validaFecha($fecha, "31/12/2040")){
+            $resultado = false;
+        }
+        if($fecha < $this->_fechaIniVenta){
+            $resultado = false;
+        }
+        $this->_fechaFinVenta = $fecha;
+        return $resultado;
     }
+
+    public function getFechaFinVenta(): string{
+        return $this->_fechaFinVenta;
+    }
+
     public function damePropiedadesAdicionales(): array{
         return [];
     }
@@ -177,6 +197,6 @@ abstract class MuebleBase{
     {
         return "MUEBLE de clase " . get_class($this) . " con nombre " . $this->_nombre . ", fabricante " . $this->_fabricante . ", fabricado en " . $this->_pais . 
         " a partir del año " . $this->_anio . ", vendido desde " . $this->_fechaIniVenta . " hasta " . $this->_fechaFinVenta . 
-        " precio " . $this->_precio . ", características " . $this->_caracteristica;
+        ",  precio " . $this->_precio . ", características " . $this->_caracteristica;
     }
 }
