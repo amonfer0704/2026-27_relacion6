@@ -1,4 +1,6 @@
 <?php
+header("Location: /aplicacion/principal/index.php");
+exit;
 include_once(dirname(__FILE__) . "/cabecera.php");
 //controlador
 

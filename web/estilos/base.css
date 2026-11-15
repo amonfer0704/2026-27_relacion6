@@ -1,13 +1,13 @@
 @charset "UTF8";
 
 body {
-    background-color: cyan;
+    background-color: rgb(252, 242, 214);
     font-size: 16px;
 }
 
 #documento{
     margin: 0 auto;
-    background-color: #8080ff;
+    background-color: #fc5e5e5d;
     width: 700px;
 }
 #cabecera{
@@ -54,12 +54,13 @@ body {
     width: 100%;
     border-collapse: collapse;
     border: none;
-    background-color: white;
+    background-color: #CBFFCB;
+    border: 1px solid #CBFFCB;
 }
 
 .tabla th{
-    background-color: teal;
-    color: blue;
+    background-color: black;
+    color: rgb(252, 69, 69);
 }
 .tabla tr.par{
     background-color: black;

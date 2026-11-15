@@ -5,7 +5,7 @@ function paginaError($mensaje)
   header("HTTP/1.0 404 $mensaje");
   inicioCabecera("PRACTICA");
   finCabecera();
-  inicioCuerpo("ERROR");
+  inicioCuerpo("ERROR", []);
   echo "<br />\n";
   echo $mensaje;
   echo "<br />\n";
@@ -48,7 +48,7 @@ function finCabecera()
 <?php   
 }
 
-function inicioCuerpo($cabecera)
+function inicioCuerpo(string $cabecera, array $ubicacion)
 {
     global $acceso;
 
@@ -70,7 +70,47 @@ function inicioCuerpo($cabecera)
                 
             </div>
             
+            <div id="barraUbicacion">
+                <?php 
+                if($ubicacion){
+                   
+                    foreach($ubicacion as $elemento){
+                        if(isset($elemento["ENLACE"])){
+                            echo "<a href = '{$elemento["ENLACE"]}'>";
+                        }
+                        echo $elemento["TEXTO"] . "&nbsp;&nbsp;";
+                    }
+                    if (isset($elemento["ADICIONAL"])) {
+                        echo "&nbsp;&nbsp;" . $elemento["ADICIONAL"];
+                    }
+                    
+                    echo "</a>";
+                    
+                    echo "&nbsp;&nbsp;";
+
+                    // //otra solución
+                    // if(isset($elemento["ENLACE"])){
+                    //     echo "<a href='{$elemento["ENLACE"]}' > ";
+                    //     echo $elemento["TEXTO"];
+                    //     if(isset($elemento["ADICIONAL"]))
+                    //         echo $elemento["ADICIONAL"];
+                    //     else
+                    //         echo "&nbsp;&nbsp;";
+                    //     echo "</a>";
+
+                    // }
+                    // else{
+                    //     echo $elemento["TEXTO"];
+
+                    // }
+                }
+
+
+                ?>
+
+            </div>
             <div>
+
 <?php   
 }
 
