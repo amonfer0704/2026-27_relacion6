@@ -2,6 +2,9 @@
 include_once(dirname(__FILE__) . "/../../cabecera.php");
 //controlador
 
+/**
+ * Indice del mueble que se muestra
+ */
 $indexSeleccionado = 0;
 if(isset($_POST["mostrar"]) && isset($_POST["mueble"])){
     $indice = (int) $_POST["mueble"];
@@ -10,11 +13,13 @@ if(isset($_POST["mostrar"]) && isset($_POST["mueble"])){
     }
 }
 
+/**
+ * Botón modificar Mueble que redirige a modificar.php
+ */
 if(isset($_REQUEST["modificar"]) && isset($_REQUEST["mueble"])){
     $indice = (int) $_REQUEST["mueble"];
     if(isset($arrayMuebles[$indice])){
         header("Location: /aplicacion/principal/modificar.php?mueble=" . $indice);
-        exit;
     }
 }
 
@@ -50,6 +55,8 @@ function cuerpo(array $arrayMuebles, int $indexSeleccionado)
 {
 ?>
     <br><br>
+    <a href="./pruebas.php">Pruebas</a>
+    <br><br>
     <table class="tabla">
         <tr>
             <th>Indice</th>
@@ -82,13 +89,13 @@ function cuerpo(array $arrayMuebles, int $indexSeleccionado)
         <?php
         foreach($arrayMuebles as $clave =>$mueble){
             $texto = $clave . " - " . get_class($mueble) . " - " . $mueble->getNombre() . " (" . $mueble->getPrecio() . "€)";
-            $seleccionado = ($clave === $indexSeleccionado)? "selected":"";
+            $seleccionado = ($clave === $indexSeleccionado)? " selected":"";
             echo '<option value="' . $clave . '"' . $seleccionado . '>' . $texto . '</option>';
         }
         ?>
         </select>
         <input type="submit" name="mostrar" value="Mostrar Mueble">
-        <input type="submit" name="modificar" value="Modificar Mueble" formtarget="_blank">
+        <input type="submit" name="modificar" value="Modificar Mueble">
     </form>
 <?php
     if($indexSeleccionado > 0){
@@ -96,6 +103,12 @@ function cuerpo(array $arrayMuebles, int $indexSeleccionado)
     }
 }
 
+/**
+ * Muestra todas las propiedades del mueble y sus características
+ *
+ * @param MuebleBase $mueble
+ * @return void
+ */
 function muestraMueble(MuebleBase $mueble){
     echo "<h3>Datos del mueble</h3>";
     echo "<p>Tipo: " . get_class($mueble) . "</p>";

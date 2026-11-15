@@ -1,7 +1,19 @@
 <?php 
 
+/**
+ * Clase abstracta con los muebles de una tienda
+ * No se puede instanciar al ser abstracta
+ */
 abstract class MuebleBase{
+    /**
+     * Número máximo de muebles que se pueden crear
+     */
     private const int MAXIMO_MUEBLES = 10;
+    /**
+     * Variable de clase que muestra la cantidad de muebles creados
+     *
+     * @var integer
+     */
     private static int $_mueblesCreados = 0;
     private string $_nombre;
     private string $_fabricante;
@@ -10,8 +22,20 @@ abstract class MuebleBase{
     private string $_fechaIniVenta;
     private string $_fechaFinVenta;
     private float $_precio;
+
+    /**
+     * Características adicionales de mueble
+     *
+     * @var Caracteristicas
+     */
     private Caracteristicas $_caracteristica;
 
+    /**
+     * Métodos mágicos sin sobrecarga
+     *
+     * @param [type] $name
+     * @param [type] $value
+     */
     public function __set($name, $value)
     {
         throw new \Exception("No existe la propiedad $name");
@@ -29,6 +53,17 @@ abstract class MuebleBase{
         throw new \Exception("No existe la propiedad $name");
     }
 
+    /**
+     * Constructor, solo el nombre es obligatorio, los demás tienen valores por defecto
+     *
+     * @param string $nombre
+     * @param string $fabricante
+     * @param string $pais
+     * @param integer $anio
+     * @param string $fechaIniVenta
+     * @param string $fechaFinVenta
+     * @param integer $precio
+     */
     public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "ESPAÑA", int $anio = 2020, string $fechaIniVenta = "01/01/2020", string $fechaFinVenta = "31/12/2040", float $precio = 30)
     {
 
@@ -60,6 +95,12 @@ abstract class MuebleBase{
         self::$_mueblesCreados++;
     }
 
+    /**
+     * Nombre en mayúsculas, que no esté vacío y máximo de 40 carácteres
+     *
+     * @param string $_nombre
+     * @return boolean devuelve true y se asigna si es correcto y si no, devuelve falso y no asigna nada
+     */
     public function setNombre(string $_nombre): bool{
         $resultado = true;
         $_nombre = mb_strtoupper(mb_trim($_nombre));
@@ -74,6 +115,12 @@ abstract class MuebleBase{
         return $this->_nombre;
     }
 
+    /**
+     * Fabricante siempre empieza por "FaMu:", se añade si no lo tiene y se recorta de caracteres máximos (30)
+     *
+     * @param string $_fabricante
+     * @return boolean
+     */
     public function setFabricante(string $_fabricante): bool{
         $prefijo = "FaMu:";
         if(mb_substr($_fabricante,0,mb_strlen($prefijo)) !== $prefijo){
@@ -87,6 +134,12 @@ abstract class MuebleBase{
         return $this->_fabricante;
     }
 
+    /**
+     * País, cadena de 20 carácteres como máximo
+     *
+     * @param string $_pais
+     * @return boolean
+     */
     public function setPais(string $_pais): bool{
         $resultado = true;
         if(!validaCadena($_pais, 20, "ESPAÑA")){
@@ -102,6 +155,12 @@ abstract class MuebleBase{
         return $this->_pais;
     }
 
+    /**
+     * Año de inicio de fabricación, entero entre 2020 y el año actual
+     *
+     * @param integer $_anio
+     * @return boolean
+     */
     public function setAnio(int $_anio): bool{
         $resultado = true;
         $anioActual = (int)date("Y");
@@ -117,6 +176,12 @@ abstract class MuebleBase{
         return $this->_anio;
     }
 
+    /**
+     * Fecha de inicio de venta, fecha válida y no anterior al año de fabricación
+     *
+     * @param string $_fechaIniVenta
+     * @return boolean
+     */
     public function setFechaIniVenta(string $_fechaIniVenta): bool{
         $resultado = true;
         $fechaFormateada = $_fechaIniVenta;
@@ -127,7 +192,8 @@ abstract class MuebleBase{
         if ($anioVenta < $this->_anio){
             $resultado = false;
         }
-        $this->_fechaIniVenta = $fechaFormateada;
+        if($resultado)
+            $this->_fechaIniVenta = $fechaFormateada;
         return $resultado;
     }
 
@@ -135,11 +201,18 @@ abstract class MuebleBase{
         return $this->_fechaIniVenta;
     }
 
+    /**
+     * Precio, número real no menor de 30
+     *
+     * @param float $_precio
+     * @return boolean
+     */
     public function setPrecio(float $_precio): bool{
         $resultado = true;
         if($_precio < 30)
             $resultado = false;
-        $this->_precio = $_precio;
+        if($resultado)
+            $this->_precio = $_precio;
         return $resultado;
     }
 
@@ -147,6 +220,12 @@ abstract class MuebleBase{
         return $this->_precio;
     }
 
+    /**
+     * Fecha de fin de venta, fecha válida que no puede ser anterior a la de inicio de venta
+     *
+     * @param string $fechaFinVenta
+     * @return boolean
+     */
     public function setFechaFinVenta(string $fechaFinVenta): bool{
         $resultado = true;
         $fecha = $fechaFinVenta;
@@ -156,7 +235,8 @@ abstract class MuebleBase{
         if($fecha < $this->_fechaIniVenta){
             $resultado = false;
         }
-        $this->_fechaFinVenta = $fecha;
+        if($resultado)
+            $this->_fechaFinVenta = $fecha;
         return $resultado;
     }
 
@@ -164,14 +244,31 @@ abstract class MuebleBase{
         return $this->_fechaFinVenta;
     }
 
+    /**
+     * Método que devuelve el nombre de las propiedades adicionales a las de la clase base
+     *
+     * @return array
+     */
     public function damePropiedadesAdicionales(): array{
         return [];
     }
 
+    /**
+     * Devuelve las características del mueble
+     *
+     * @return Caracteristicas
+     */
     public function getCaracteristicas(): Caracteristicas{
         return $this->_caracteristica;
     }
 
+    /**
+     * Añade características reciviendo pares de clave valor, si el número de argumentos es impar
+     * el último no se usa
+     *
+     * @param mixed ...$parametros
+     * @return void
+     */
     public function anadirCaracteristicas(mixed ...$parametros): void{
         for($i = 0; $i < count($parametros) - 1; $i+=2){
             $nombre= $parametros[$i];
@@ -181,6 +278,13 @@ abstract class MuebleBase{
             $this->_caracteristica->$nombre = $parametros[$i + 1];
         }
     }
+
+    /**
+     * Método de clase que devuelve true si se pueden crear más muebles y false si no
+     *
+     * @param integer $numero
+     * @return boolean
+     */
     public static function puedeCrear(int &$numero): bool{
         $resultado = true;
         if(self::$_mueblesCreados >= self::MAXIMO_MUEBLES){
@@ -193,6 +297,11 @@ abstract class MuebleBase{
         return $resultado;
     }
 
+    /**
+     * Método toString para devolver una cadena de mueble
+     *
+     * @return string
+     */
     public function __toString()
     {
         return "MUEBLE de clase " . get_class($this) . " con nombre " . $this->_nombre . ", fabricante " . $this->_fabricante . ", fabricado en " . $this->_pais . 

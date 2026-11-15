@@ -48,17 +48,17 @@ if($indice > 0){
         }
         $aux = clone $mueble;
         if (!$aux->setNombre($valores["nombre"])) {
-            $errores["nombre"] = "Obligatorio, máximo 40 caracteres";
+            $errores["nombre"] = "El nombre no puede estar vacío y debe tener máximo 40 caracteres";
         }
         if (!$aux->setFabricante($valores["fabricante"])) {
             $errores["fabricante"] = "Fabricante no válido";
         }
         if (!$aux->setPais($valores["pais"])) {
-            $errores["pais"] = "Máximo 20 caracteres";
+            $errores["pais"] = "El país debe tener como máximo 20 caracteres";
         }
         $anioTexto = $valores["anio"];
         if (!validaExpresion($anioTexto, "/^[0-9]+$/", "") || !$aux->setAnio((int) $anioTexto)) {
-            $errores["anio"] = "Entero entre 2020 y el año actual";
+            $errores["anio"] = "El año debe ser un entero entre 2020 y el año actual";
         }
         $anio = $aux->getAnio();
         $fechaIni = $valores["fechaIni"];
