@@ -22,6 +22,7 @@ abstract class MuebleBase{
     private string $_fechaIniVenta;
     private string $_fechaFinVenta;
     private float $_precio;
+    private Materiales $_material = Materiales::Hierro;
 
     /**
      * Características adicionales de mueble
@@ -63,8 +64,10 @@ abstract class MuebleBase{
      * @param string $fechaIniVenta
      * @param string $fechaFinVenta
      * @param integer $precio
+     * @param int $material
      */
-    public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "ESPAÑA", int $anio = 2020, string $fechaIniVenta = "01/01/2020", string $fechaFinVenta = "31/12/2040", float $precio = 30)
+    public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "ESPAÑA", int $anio = 2020, 
+                string $fechaIniVenta = "01/01/2020", string $fechaFinVenta = "31/12/2040", float $precio = 30, int $material = 10)
     {
 
         if(self::$_mueblesCreados >= self::MAXIMO_MUEBLES){
@@ -91,8 +94,34 @@ abstract class MuebleBase{
         if(!$this->setPrecio($precio)){
             $this->_precio = 30;
         }
+        if(!$this->setMaterial($material)){
+            $this->_material = Materiales::Hierro;
+        }
         $this->_caracteristica = new Caracteristicas();
         self::$_mueblesCreados++;
+    }
+
+    /**
+     * Método set y get de Materiales
+     *
+     * @param int $material
+     * @return boolean
+     */
+    public function setMaterial(int $material): bool{
+        $resultado = true;
+        $materialPrueba = Materiales::tryFrom($material);
+        if($materialPrueba === null){
+            $resultado = false;
+        }
+        else{
+            $this->_material = $materialPrueba;
+        }
+        
+        return $resultado;
+    }
+
+    public function getMaterial(): Materiales{
+        return $this->_material;
     }
 
     /**
@@ -242,6 +271,13 @@ abstract class MuebleBase{
 
     public function getFechaFinVenta(): string{
         return $this->_fechaFinVenta;
+    }
+
+    /**
+     * Método getMaterialDescripcion que devuelve una cadena con la descripción del material
+     */
+    public function getMaterialDescripcion(): string{
+        return "de material " . $this->_material->value;
     }
 
     /**

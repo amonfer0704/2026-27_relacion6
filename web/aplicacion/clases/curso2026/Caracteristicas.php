@@ -24,6 +24,15 @@ class Caracteristicas implements Iterator{
     private int $_posicion = 0;
 
     /**
+     * Característica dinámica numero_serie
+     */
+    private int $_numero_serie;
+
+    public function getNumeroSerie(): int{
+        return $this->_numero_serie;
+    }
+
+    /**
      * Añade o modifica una característica, si ya existe última, no se puede añadir
      * ninguna nueva y lanza excepción, pero si se puede modificar las que existan
      *
@@ -37,6 +46,11 @@ class Caracteristicas implements Iterator{
             throw new Exception("No se pueden añadir más características");
         }
         $this->_propiedades[$name] = $value;
+        $arrayNumeros = [];
+        for($i = 0; $i < 15; $i++){
+            array_push($arrayNumeros, rand());
+        }
+        //$this->_numero_serie = $arrayNumeros;
     }
 
     /**
@@ -119,6 +133,7 @@ class Caracteristicas implements Iterator{
     {
         $this->_claves = array_keys($this->_propiedades);
         $this->_posicion = count($this->_claves) - 1;
+        //$this->_numero_serie[0]; 
     }
 
     /**

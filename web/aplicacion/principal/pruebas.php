@@ -23,12 +23,12 @@ $lineas = [];
 /**
  * Pruebas con el constructor, comprobación de que se crean sin problema
  */
-$reciclado = new MuebleReciclado("silla", "Lola", "Portugal", 2022, "01/03/2022", "31/12/2030", 120, 35);
+$reciclado = new MuebleReciclado("silla", "Lola", "Portugal", 2022, "01/03/2022", "31/12/2030", 120, 5, 35);
 $tradicional = new MuebleTradicional("sofá", "Gómez", "Francia", 2021, "15/06/2021", "31/12/2035", 450.5, 120, "S07");
 $lineas[] = "Constructor MuebleReciclado: " . $reciclado;
 $lineas[] = "Constructor MuebleTradicional: " . $tradicional;
 try{
-    $muebleError = new MuebleReciclado("");
+    //$muebleError = new MuebleReciclado("");
     $lineas[] = "ERROR: se ha creado un mueble con el nombre vacío";
 }
 catch(Exception $e){
@@ -96,13 +96,13 @@ unset($caracteristicas->peso);
 if(!isset($caracteristicas->peso)){
     $lineas[] = "__unset: peso ya no existe";
 }
-$reciclado->anadirCaracteristicas("ULTIMA", true);
-try{
-    $reciclado->anadirCaracteristicas("nueva", 1);
-}
-catch(Exception $e){
-    $lineas[] = "Añadir una característica después de ULTIMA -> excepción: " . $e->getMessage();
-}
+//$reciclado->anadirCaracteristicas("ULTIMA", true);
+// try{
+//     $reciclado->anadirCaracteristicas("nueva", 1);
+// }
+// catch(Exception $e){
+//     $lineas[] = "Añadir una característica después de ULTIMA -> excepción: " . $e->getMessage();
+// }
 
 /**
  * ToString

@@ -1,7 +1,7 @@
 <?php
 include_once(dirname(__FILE__) . "/../../cabecera.php");
 //controlador
-
+$indexSeleccionado = 0;
 $barra = [
     [
         "TEXTO" => "inicio",
@@ -37,6 +37,7 @@ if($indice > 0){
         $valores["fechaIni"] = $mueble->getFechaIniVenta();
         $valores["fechaFin"] = $mueble->getFechaFinVenta();
         $valores["precio"] = (string) $mueble->getPrecio();
+        $valores["material"] = $mueble->getMaterial()->value;
         foreach ($propiedades as $propiedad) {
             $getter = "get" . $propiedad;
             $valores[$propiedad] = (string) $mueble->$getter();
@@ -91,6 +92,9 @@ if($indice > 0){
                 $errores["Serie"] = "No puede estar vacía";
             }
         }
+        if(!$mueble->getMaterial()->value % 5 === 0){
+            $errores["materiales"] = "El valor del material debe ser divisible entre 5";
+        }
         if (count($errores) === 0) {
             $aux->setFechaIniVenta($fechaIni);
             $aux->setFechaFinVenta($fechaFin);
@@ -111,7 +115,7 @@ inicioCabecera("APLICACION PRIMER TRIMESTRE");
 cabecera();
 finCabecera();
 inicioCuerpo("2DAW APLICACION", $barra);
-cuerpo($indice, $arrayMuebles, $valores, $errores, $modificado);  //llamo a la vista
+cuerpo($indice, $arrayMuebles, $valores, $errores, $modificado, $indexSeleccionado);  //llamo a la vista
 finCuerpo();
 // **********************************************************
 
@@ -120,7 +124,7 @@ function cabecera()
 {}
 
 //vista
-function cuerpo(int $indice, array $arrayMuebles, array $valores, array $errores, bool $modificado)
+function cuerpo(int $indice, array $arrayMuebles, array $valores, array $errores, bool $modificado, int $indexSeleccionado)
 {
     echo "<br><br>";
     if ($indice === 0) {
@@ -128,11 +132,11 @@ function cuerpo(int $indice, array $arrayMuebles, array $valores, array $errores
     } elseif ($modificado) {
         resumen($arrayMuebles[$indice]);
     } else {
-        formulario($indice, $arrayMuebles[$indice], $valores, $errores);
+        formulario($indice, $arrayMuebles[$indice], $valores, $errores, $indexSeleccionado);
     }
     echo '<p><a href="index.php">Ir a index.php</a></p>';
 }
-function formulario(int $indice, MuebleBase $mueble, array $valores, array $errores)
+function formulario(int $indice, MuebleBase $mueble, array $valores, array $errores, int $indexSeleccionado)
 {
     $campos = [
         "nombre" => "Nombre",
@@ -158,6 +162,14 @@ function formulario(int $indice, MuebleBase $mueble, array $valores, array $erro
         }
         echo "</p>";
     }
+    echo "<label>Materiales:</label>";
+    echo "<select name='materiales'>";
+    foreach(Materiales::cases() as $clave=>$valor){
+        $texto = $clave . " - " . $valor->value;
+            $seleccionado = ($clave === $indexSeleccionado)? " selected":"";
+            echo '<option value="' . $clave . '"' . $seleccionado . '>' . $texto . '</option>';
+        }
+    echo "</select>";
     echo '<input type="submit" name="guardar" value="Guardar cambios">';
     echo "</form>";
 }
@@ -172,6 +184,7 @@ function resumen(MuebleBase $mueble)
     echo "<p>Inicio de venta: " . $mueble->getFechaIniVenta() . "</p>";
     echo "<p>Fin de venta: " . $mueble->getFechaFinVenta() . "</p>";
     echo "<p>Precio: " . $mueble->getPrecio() . "</p>";
+    echo "<p>Material: " . $mueble->getMaterial()->value . "</p>";
     foreach ($mueble->damePropiedadesAdicionales() as $propiedad) {
         $getter = "get" . $propiedad;
         echo "<p>" . $propiedad . ": " . $mueble->$getter() . "</p>";

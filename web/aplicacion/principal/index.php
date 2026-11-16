@@ -67,6 +67,7 @@ function cuerpo(array $arrayMuebles, int $indexSeleccionado)
             <th>Inicio venta</th>
             <th>Fin venta</th>
             <th>Precio</th>
+            <th>Material</th>
         </tr>
             <?php 
             for($i = 1; $i < count($arrayMuebles) + 1; $i++){
@@ -79,6 +80,7 @@ function cuerpo(array $arrayMuebles, int $indexSeleccionado)
                 echo "<td>" . $arrayMuebles[$i]->getFechaIniVenta() . "</td>";
                 echo "<td>" . $arrayMuebles[$i]->getFechaFinVenta() . "</td>";
                 echo "<td>" . $arrayMuebles[$i]->getPrecio() . "</td>";
+                echo "<td>" . $arrayMuebles[$i]->getMaterial()->value . "</td>";
                 echo "</tr>";
             }
             ?>

@@ -20,18 +20,20 @@ final class MuebleTradicional extends MuebleBase{
      * @param integer $precio
      * @param integer $peso
      * @param string $serie
+     * @param int $material
+     * @param float $peso
+     * @param string $serie
      */
-    public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "ESPAÑA", int $anio = 2020, string $fechaIniVenta = "01/01/2020", string $fechaFinVenta = "31/12/2040", float $precio = 30, float $peso = 15, string $serie = "S01")
+    public function __construct(string $nombre, string $fabricante = "FaMu:", string $pais = "ESPAÑA", int $anio = 2020, string $fechaIniVenta = "01/01/2020", 
+            string $fechaFinVenta = "31/12/2040", float $precio = 30, float $peso = 15, string $serie = "S01")
     {
         parent::__construct($nombre, $fabricante, $pais, $anio, $fechaIniVenta, $fechaFinVenta, $precio);
-
         if(!$this->setPeso($peso)){
-            $this->_Peso = 15;
-        }
+            $this->_Peso = 15.0;
+         }
         if(!$this->setSerie($serie)){
             $this->_Serie = "S01";
-        }
-
+         }
     }
 
     /**
